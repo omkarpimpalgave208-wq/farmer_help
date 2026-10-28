@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f7f2" />
+  <title>Perplectra — Agricultural Decision Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="Perplectra home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>perplectra<span class="brand-dot">.</span><small>DECISION INTELLIGENCE</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <a class="nav-item active" href="#overview"><span class="nav-icon">◫</span> Overview</a>
+        <a class="nav-item" href="#crop-intelligence"><span class="nav-icon">⌬</span> Crop intelligence</a>
+        <a class="nav-item" href="#decision"><span class="nav-icon">⌁</span> Decision engine</a>
+        <a class="nav-item" href="#scenario"><span class="nav-icon">↻</span> Scenario lab</a>
+        <a class="nav-item" href="#history"><span class="nav-icon">◷</span> Decision history</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="status-card"><span class="status-light"></span><div><strong>Demo environment</strong><small>Local decision rules active</small></div></div>
+        <div class="profile-row"><div class="avatar">OP</div><div><strong>Operator workspace</strong><small>Starter account</small></div><span class="dots">···</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="top">
+      <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong>Agricultural decisions</strong></div><div class="top-actions"><span class="demo-tag"><span></span> ILLUSTRATIVE DATA</span><button class="icon-button" id="resetBtn" title="Reset demo" aria-label="Reset demo">↺</button><div class="avatar small-avatar">OP</div></div></header>
+      <section class="page-intro" id="overview">
+        <div><div class="eyebrow"><span class="eyebrow-line"></span> HARVEST INTELLIGENCE</div><h1>What should happen <em>next?</em></h1><p class="intro-copy">Turn changing post-harvest conditions into a clear, explainable next move.</p></div>
+        <div class="intro-meta"><span class="live-pulse"></span><div><strong id="updatedAt">Ready to evaluate</strong><small>Decision state · local simulation</small></div></div>
+      </section>
+
+      <section class="metrics-grid" aria-label="Current harvest snapshot">
+        <article class="metric-card"><div class="metric-top"><span>Market price</span><span class="metric-symbol">↗</span></div><div class="metric-value" id="metricPrice">₹2,400 <small>/ quintal</small></div><div class="metric-foot"><span class="neutral-chip" id="priceChangeChip">Base scenario</span><span>Illustrative market</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>Harvest quality</span><span class="metric-symbol">◈</span></div><div class="metric-value"><span id="metricQuality">Good</span></div><div class="metric-foot"><span class="quality-track"><i id="qualityBar"></i></span><span id="qualityScore">78 / 100</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>Time to spoilage</span><span class="metric-symbol">◷</span></div><div class="metric-value" id="metricShelf">72 <small>hours</small></div><div class="metric-foot"><span class="neutral-chip">Estimated window</span><span>Perishability input</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>Available storage</span><span class="metric-symbol">▤</span></div><div class="metric-value" id="metricStorage">Available</div><div class="metric-foot"><span class="status-text"><i class="tiny-dot"></i><span id="storageFoot">Capacity assumed sufficient</span></span></div></article>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           00 / CROP INTELLIGENCE
+           ═══════════════════════════════════════════════ -->
+      <section class="panel crop-intel-panel" id="crop-intelligence" aria-label="Crop Intelligence">
+        <div class="panel-heading">
+          <div>
+            <div class="section-kicker">00 / CROP INTELLIGENCE</div>
+            <h2>Crop Intelligence</h2>
+            <p>Upload a photo of your crop to understand its visible condition and explore your next best decision.</p>
+          </div>
+          <span class="panel-icon ci-panel-icon">⌬</span>
+        </div>
+
+        <!-- Upload zone -->
+        <div class="ci-upload-zone" id="ciUploadZone" role="button" tabindex="0"
+             aria-label="Upload crop image — click or drag and drop"
+             aria-describedby="ciUploadHint">
+          <div class="ci-upload-idle" id="ciUploadIdle">
+            <div class="ci-upload-icon" aria-hidden="true">⊞</div>
+            <div class="ci-upload-primary">Drop a crop photo here</div>
+            <div class="ci-upload-secondary" id="ciUploadHint">or click to browse — JPEG, PNG, WebP · max 8 MB</div>
+            <div class="ci-upload-actions">
+              <button class="secondary-button" id="ciBrowseBtn" type="button" aria-label="Choose image file">Choose image</button>
+              <label class="secondary-button ci-camera-label" for="ciCameraInput" aria-label="Take photo with camera">Take photo</label>
+            </div>
+          </div>
+          <div class="ci-upload-preview hidden" id="ciUploadPreview">
+            <img id="ciPreviewImg" src="" alt="Selected crop image preview" class="ci-preview-img" />
+            <div class="ci-preview-controls">
+              <button class="secondary-button" id="ciReplaceBtn" type="button">Replace image</button>
+              <button class="text-button ci-remove-btn" id="ciRemoveBtn" type="button">Remove ✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden file inputs -->
+        <input type="file" id="ciFileInput"   accept="image/jpeg,image/png,image/webp" class="ci-hidden-input" aria-hidden="true" tabindex="-1" />
+        <input type="file" id="ciCameraInput" accept="image/jpeg,image/png,image/webp" capture="environment" class="ci-hidden-input" aria-hidden="true" tabindex="-1" />
+
+        <!-- Error banner -->
+        <div class="ci-error" id="ciError" role="alert" aria-live="assertive" hidden></div>
+
+        <!-- Analyze button -->
+        <div class="ci-analyze-row">
+          <button class="primary-button ci-analyze-btn" id="ciAnalyzeBtn" type="button" disabled
+                  aria-label="Analyze crop image with AI">
+            <span id="ciAnalyzeBtnLabel">Analyze Crop</span>
+            <span class="button-arrow" aria-hidden="true">⌬</span>
+          </button>
+          <span class="ci-disclosure"><span aria-hidden="true">ⓘ</span> Your image is sent to Google Gemini for analysis and is not stored.</span>
+        </div>
+
+        <!-- Report area (hidden until analysis completes) -->
+        <div class="ci-report" id="ciReport" hidden aria-live="polite">
+
+          <!-- Section A: Crop Identification -->
+          <div class="ci-report-section" id="ciSecIdentification">
+            <div class="ci-report-section-head">
+              <span class="ci-section-badge" aria-hidden="true">A</span>
+              <h3 class="ci-report-h3">Crop Identified</h3>
+              <span class="ci-uncertainty-badge" id="ciUncertaintyBadge"></span>
+            </div>
+            <div class="ci-crop-name" id="ciCropName"></div>
+            <div class="ci-report-detail" id="ciAlternatives"></div>
+            <ul class="ci-feature-list" id="ciFeatureList"></ul>
+          </div>
+
+          <!-- Section B: Visible Condition -->
+          <div class="ci-report-section" id="ciSecCondition">
+            <div class="ci-report-section-head">
+              <span class="ci-section-badge" aria-hidden="true">B</span>
+              <h3 class="ci-report-h3">Visible Condition</h3>
+              <span class="ci-ripeness-badge" id="ciRipenessBadge"></span>
+            </div>
+            <div class="ci-condition-grid">
+              <div class="ci-cond-item"><span class="ci-cond-label">Colour &amp; texture</span><span id="ciColorTexture"></span></div>
+              <div class="ci-cond-item"><span class="ci-cond-label">Damage / symptoms</span><span id="ciDamage"></span></div>
+              <div class="ci-cond-item ci-cond-wide"><span class="ci-cond-label">Photo limitations</span><span id="ciPhotoLimitations"></span></div>
+            </div>
+          </div>
+
+          <!-- Section C: Suggested Next Steps -->
+          <div class="ci-report-section" id="ciSecNextSteps">
+            <div class="ci-report-section-head">
+              <span class="ci-section-badge" aria-hidden="true">C</span>
+              <h3 class="ci-report-h3">Suggested Next Steps</h3>
+            </div>
+            <ul class="ci-steps-list" id="ciNextStepsList"></ul>
+          </div>
+
+          <!-- Section D: Decision Summary -->
+          <div class="ci-report-section ci-decision-section" id="ciSecDecision">
+            <div class="ci-report-section-head">
+              <span class="ci-section-badge badge-decision" aria-hidden="true">D</span>
+              <h3 class="ci-report-h3">Preliminary Decision Signal</h3>
+            </div>
+            <div class="ci-decision-action" id="ciDecisionAction"></div>
+            <p class="ci-decision-reasoning" id="ciDecisionReasoning"></p>
+            <div class="ci-missing-info" id="ciMissingInfo"></div>
+            <div class="ci-connect-notice">
+              <span aria-hidden="true">↓</span>
+              Fill in your harvest details below and press <strong>Evaluate next action</strong> to get a full decision from the existing engine.
+            </div>
+          </div>
+
+          <!-- Report footer -->
+          <div class="ci-report-footer">
+            <span class="ci-report-meta" id="ciReportMeta"></span>
+            <button class="text-button" id="ciReassessBtn" type="button">Reassess decision ↻</button>
+          </div>
+        </div>
+
+        <!-- Loading overlay -->
+        <div class="ci-loading" id="ciLoading" hidden aria-live="polite" aria-label="Analysing image…">
+          <div class="ci-spinner" aria-hidden="true"></div>
+          <span>Analysing image with Gemini 2.0 Flash…</span>
+        </div>
+
+      </section>
+
+      <section class="workspace-grid">
+        <article class="panel inputs-panel" id="decision">
+          <div class="panel-heading"><div><div class="section-kicker">01 / HARVEST INPUT</div><h2>Current conditions</h2><p>Adjust the situation to evaluate a new decision.</p></div><span class="panel-icon">⌘</span></div>
+          <form id="harvestForm">
+            <div class="field-grid">
+              <label class="field full-field"><span>Crop</span><select id="crop"><option value="tomato">Tomato</option><option value="onion">Onion</option><option value="potato">Potato</option><option value="mango">Mango</option><option value="grapes">Grapes</option></select></label>
+              <label class="field"><span>Harvest quantity</span><div class="input-unit"><input id="quantity" type="number" min="1" max="100000" value="120" required /><span>quintals</span></div></label>
+              <label class="field"><span>Current market price</span><div class="input-unit"><span class="prefix">₹</span><input id="price" type="number" min="1" max="1000000" value="2400" required /><span>/qtl</span></div></label>
+              <label class="field"><span>Quality condition</span><select id="quality"><option value="excellent">Excellent</option><option value="good" selected>Good</option><option value="fair">Fair</option><option value="poor">Poor</option></select></label>
+              <label class="field"><span>Shelf life remaining</span><div class="input-unit"><input id="shelfLife" type="number" min="1" max="720" value="72" required /><span>hours</span></div></label>
+              <label class="field"><span>Transport time</span><div class="input-unit"><input id="transit" type="number" min="0" max="240" value="6" required /><span>hours</span></div></label>
+              <label class="field"><span>Storage access</span><select id="storage"><option value="available" selected>Available</option><option value="limited">Limited capacity</option><option value="unavailable">Unavailable</option></select></label>
+              <label class="field full-field"><span>Destination / market context</span><input id="destination" type="text" value="Nearest wholesale market" maxlength="80" /></label>
+            </div>
+            <div class="form-note"><span>ⓘ</span> Inputs are local demo values. No external data is being fetched.</div>
+            <button class="primary-button" type="submit"><span>Evaluate next action</span><span class="button-arrow">↗</span></button>
+          </form>
+        </article>
+
+        <article class="panel recommendation-panel" id="recommendation" aria-live="polite">
+          <div class="panel-heading"><div><div class="section-kicker">02 / RECOMMENDATION</div><h2>Decision brief</h2><p>Recommended action and the reasoning behind it.</p></div><span class="confidence-ring" id="confidenceRing"><strong id="confidenceValue">82%</strong><small>confidence</small></span></div>
+          <div class="recommendation-hero"><div class="recommendation-label"><span class="rec-check">✓</span> RECOMMENDED NEXT MOVE</div><div class="recommendation-title-row"><h3 id="recommendationTitle">Sell soon</h3><span class="decision-status" id="decisionStatus">LOW DELAY RISK</span></div><p id="recommendationSummary">The current conditions favor selling while quality and market value remain favorable.</p><div class="rec-stats"><div><span>Estimated gross value</span><strong id="grossValue">₹2,88,000</strong></div><div><span>Potential delay exposure</span><strong id="delayExposure">₹14,400</strong></div></div></div>
+          <div class="reasoning-block"><div class="reasoning-head"><h4>Why this decision?</h4><span>EXPLAINABLE LOGIC</span></div><ul id="reasonList" class="reason-list"><li><span class="reason-bullet positive">✓</span><span>Quality is currently suitable for sale.</span></li><li><span class="reason-bullet">↗</span><span>Transport time is within the available shelf-life window.</span></li><li><span class="reason-bullet">✓</span><span>Storage is available as a fallback option.</span></li></ul></div>
+          <div class="decision-footer"><span><i class="tiny-dot"></i> Rule-based demo · not financial advice</span><button class="text-button" id="copyBrief">Copy decision brief ↗</button></div>
+        </article>
+      </section>
+
+      <section class="panel scenario-panel" id="scenario">
+        <div class="panel-heading scenario-heading"><div><div class="section-kicker">03 / SCENARIO LAB</div><h2>What if conditions change?</h2><p>Apply a shock to the current state and recalculate the decision.</p></div><button class="secondary-button" id="clearScenario">Clear changes <span>↺</span></button></div>
+        <div class="scenario-grid">
+          <label class="scenario-option"><span class="scenario-icon amber">₹</span><span class="scenario-copy"><strong>Market price falls</strong><small>Simulate a 15% price decrease</small></span><input type="checkbox" id="shockPrice" /><span class="toggle"></span></label>
+          <label class="scenario-option"><span class="scenario-icon blue">↗</span><span class="scenario-copy"><strong>Transport delay</strong><small>Add 8 hours to transit time</small></span><input type="checkbox" id="shockTransit" /><span class="toggle"></span></label>
+          <label class="scenario-option"><span class="scenario-icon rose">◈</span><span class="scenario-copy"><strong>Quality deteriorates</strong><small>Reduce quality by one level</small></span><input type="checkbox" id="shockQuality" /><span class="toggle"></span></label>
+          <label class="scenario-option"><span class="scenario-icon green">▤</span><span class="scenario-copy"><strong>Storage unavailable</strong><small>Remove storage as an option</small></span><input type="checkbox" id="shockStorage" /><span class="toggle"></span></label>
+        </div>
+        <div class="scenario-bottom"><div class="scenario-summary"><span class="scenario-dot"></span><span id="scenarioSummary">Base conditions · no shocks applied</span></div><button class="primary-button compact-button" id="simulateBtn">Recalculate decision <span class="button-arrow">↗</span></button></div>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel options-panel"><div class="panel-heading"><div><div class="section-kicker">04 / OPTIONS REVIEW</div><h2>Compare possible actions</h2></div><span class="small-muted">Relative suitability</span></div><div id="optionsList" class="options-list"></div><div class="options-footnote">Scores are generated from transparent demo rules, not trained predictions.</div></article>
+        <article class="panel timeline-panel" id="history"><div class="panel-heading"><div><div class="section-kicker">05 / DECISION TRACE</div><h2>Decision history</h2></div><div class="history-actions"><button class="secondary-button small-action" id="exportHistoryBtn" type="button">Export CSV ↗</button><button class="text-button" id="clearHistoryBtn" type="button">Clear</button><span class="history-count" id="historyCount">01</span></div></div><div id="historyList" class="history-list"><div class="history-item"><span class="history-node current"></span><div><strong>Initial evaluation</strong><p>Base conditions loaded for review.</p><small>Just now · Demo state</small></div></div></div><div class="history-note">Each recalculation is added here during this browser session.</div></article>
+      </section>
+      <footer class="footer"><div class="footer-brand"><span class="brand-mark tiny-mark"><span></span><span></span><span></span></span> perplectra</div><span>A decision engine concept · Agricultural Decision Intelligence</span><span>Prototype 0.1</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
