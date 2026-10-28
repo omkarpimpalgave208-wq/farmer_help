@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/*.js": {
+    "api/analyze-crop.js": {
       "maxDuration": 30
     }
   }
